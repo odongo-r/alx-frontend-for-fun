@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 """
-This module converts Markdown files to HTML.
+A script to convert Markdown files to HTML.
 
-It supports headings, unordered and ordered lists, paragraphs, bold, emphasis,
-and special formatting like MD5 hashing and removal of 'c' characters.
-
-Usage:
-    ./markdown2html.py README.md README.html
+Supports headings, unordered and ordered lists, paragraphs, bold, emphasis,
+and special formatting for text wrapped in [[text]] and ((text)).
 """
 
 import sys
@@ -14,23 +11,23 @@ import os
 import re
 import hashlib
 
+
 def convert_bold_and_emphasis(line):
-    """
-    Convert Markdown bold (**text**) and emphasis (__text__) to HTML.
-    """
+    """Convert Markdown bold and emphasis to HTML."""
     line = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', line)
     line = re.sub(r'__(.*?)__', r'<em>\1</em>', line)
     return line
 
+
 def convert_special(line):
-    """
-    Convert [[text]] to MD5 hash and ((text)) to text with all 'c' removed.
-    """
+    """Handle special cases for MD5 conversion and removal of 'c' or 'C'."""
     line = re.sub(r'\[\[(.*?)\]\]', lambda m: hashlib.md5(m.group(1).encode()).hexdigest(), line)
     line = re.sub(r'\(\((.*?)\)\)', lambda m: m.group(1).replace('c', '').replace('C', ''), line)
     return line
 
+
 def main():
+    """Main function to convert Markdown to HTML."""
     if len(sys.argv) < 3:
         print("Usage: ./markdown2html.py README.md README.html", file=sys.stderr)
         sys.exit(1)
@@ -83,6 +80,7 @@ def main():
                     html_file.write(line.strip() + "<br/>\n")
         if in_paragraph:
             html_file.write("</p>\n")
+
 
 if __name__ == "__main__":
     main()
