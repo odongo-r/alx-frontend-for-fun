@@ -1,0 +1,21 @@
+h2 a {
+    text-decoration: none;
+    position: relative;
+    color: #8a153a;
+}
+
+h2 a::before {
+    content: "";
+    bottom: 0;
+    width: 0;
+    height: 0.1rem;
+    position: absolute;
+    background-color: #090909;
+    transition: 0.9s cubic-bezier(.17,.67,.83,.67);
+}
+
+a:hover::before {
+    left: 0;
+    background-color: #8a153a;
+    width: 100%;
+}
